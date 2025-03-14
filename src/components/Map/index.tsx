@@ -141,7 +141,7 @@ export default function Map(props: any) {
         width: "100vw",
         height: "100vh",
         zIndex: "0",
-        background: "url('/viewer/night-sky.png')",
+        background: "url('/inat_canada_heatmap/night-sky.png')",
       }}
     ></div>
   );
