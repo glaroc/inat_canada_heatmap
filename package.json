@@ -47,7 +47,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "test": "jest",
     "lint": "eslint './src/**/*.{d.ts,ts,tsx}'",
     "prepare": "husky install"
@@ -87,6 +87,7 @@
     "prettier": "2.5.1",
     "prettier-eslint": "^14.0.2",
     "prettier-eslint-cli": "^8.0.1",
-    "ts-jest": "^28.0.1"
+    "ts-jest": "^28.0.1",
+    "gh-pages": "^4.0.0"
   }
 }
