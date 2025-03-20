@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { amfhot, haline, ocean, custom } from "./colormaps";
+import { darkpositron } from "./mapstyle";
 
 export default function Map(props: any) {
   const { COGUrl, opacity } = props;
@@ -17,7 +18,8 @@ export default function Map(props: any) {
         container: "App",
         zoom: 3,
         center: [-90, 55],
-        style: {
+        style: darkpositron,
+        _style: {
           version: 8,
           projection: {
             type: "globe",
@@ -26,6 +28,10 @@ export default function Map(props: any) {
             satellite: {
               url: "https://api.maptiler.com/tiles/satellite-v2/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
               type: "raster",
+            },
+            backlight: {
+              type: "raster",
+              url: "https://tiles.openfreemap.org/styles/liberty",
             },
             cog: {
               type: "raster",
@@ -59,9 +65,9 @@ export default function Map(props: any) {
           },*/
 
             {
-              id: "back",
+              id: "back2",
               type: "raster",
-              source: "background",
+              source: "satellite",
             },
 
             {
@@ -106,13 +112,34 @@ export default function Map(props: any) {
           },
         },
       });
-      map.addControl(new maplibregl.GlobeControl());
-      map.addControl(
-        new maplibregl.NavigationControl({
-          showZoom: true,
-          showCompass: false,
-        })
-      );
+      map.on("load", () => {
+        map.addControl(new maplibregl.GlobeControl());
+        map.addControl(
+          new maplibregl.NavigationControl({
+            showZoom: true,
+            showCompass: false,
+          })
+        );
+        map.setProjection({
+          type: "globe",
+        });
+        map.addSource("cog", {
+          type: "raster",
+          tiles: [
+            `https://tiler.biodiversite-quebec.ca/cog/tiles/{z}/{x}/{y}?url=${COGUrl}&rescale=0,10&colormap=${colormap}&resampling=cubic`,
+          ],
+          tileSize: 256,
+        });
+        map.addLayer({
+          id: "cog",
+          type: "raster",
+          source: "cog",
+          paint: {
+            "raster-opacity": opacity / 100,
+          },
+        });
+      });
+
       setMapp(map);
       return () => {
         map.remove();
