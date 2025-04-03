@@ -41,7 +41,7 @@ function App() {
 
   const [taxa, setTaxa] = React.useState("All");
   const [COGUrl, setCOGUrl] = React.useState(
-    "https://object-arbutus.cloud.computecanada.ca/bq-io/io/inat_canada_heatmaps/All_density_inat.tif"
+    "https://object-arbutus.cloud.computecanada.ca/bq-io/io/inat_canada_heatmaps/All_density_inat_100m.tif"
   );
 
   const globeEl = useRef();
@@ -59,7 +59,7 @@ function App() {
   const changeTaxa = (selected) => {
     setTaxa(selected);
     setCOGUrl(
-      `https://object-arbutus.cloud.computecanada.ca/bq-io/io/inat_canada_heatmaps/${taxa}_density_inat.tif`
+      `https://object-arbutus.cloud.computecanada.ca/bq-io/io/inat_canada_heatmaps/${taxa}_density_inat_100m.tif`
     );
   };
 

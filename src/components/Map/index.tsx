@@ -33,6 +33,19 @@ export default function Map(props: any) {
                 `https://tiler.biodiversite-quebec.ca/cog/tiles/{z}/{x}/{y}?url=${COGUrl}&rescale=0,10&colormap=${colormap}&resampling=cubic`,
               ],
               tileSize: 256,
+              minzoom: 7.001,
+            },
+            cog_1km: {
+              type: "raster",
+              tiles: [
+                `https://tiler.biodiversite-quebec.ca/cog/tiles/{z}/{x}/{y}?url=${COGUrl.replace(
+                  "100m",
+                  "1km"
+                )}&rescale=0,10&colormap=${colormap}&resampling=cubic`,
+              ],
+              tileSize: 256,
+              minzoom: 1,
+              maxzoom: 7,
             },
             terrain: {
               type: "raster-dem",
@@ -63,7 +76,6 @@ export default function Map(props: any) {
               type: "raster",
               source: "background",
             },
-
             {
               id: "cog",
               type: "raster",
@@ -71,7 +83,20 @@ export default function Map(props: any) {
               paint: {
                 "raster-opacity": opacity / 100,
               },
+              minzoom: 7.001,
+              maxzoom: 24,
             },
+            {
+              id: "cog_1km",
+              type: "raster",
+              source: "cog_1km",
+              minzoom: 1,
+              maxzoom: 7,
+              paint: {
+                "raster-opacity": opacity / 100,
+              },
+            },
+
             /*{
               id: "hillsh",
               type: "hillshade",
@@ -122,11 +147,21 @@ export default function Map(props: any) {
 
   useEffect(() => {
     if (mapp && COGUrl) {
-      mapp
-        .getSource("cog")
-        .setTiles([
-          `https://tiler.biodiversite-quebec.ca/cog/tiles/{z}/{x}/{y}?url=${COGUrl}&rescale=0,10&colormap=${colormap}&resampling=cubic`,
-        ]);
+      const c1 = mapp.getSource("cog");
+      c1.setTiles([
+        `https://tiler.biodiversite-quebec.ca/cog/tiles/{z}/{x}/{y}?url=${COGUrl}&rescale=0,10&colormap=${colormap}&resampling=cubic`,
+      ]);
+      c1.minzoom = 9;
+
+      const c2 = mapp.getSource("cog_1km");
+      c2.setTiles([
+        `https://tiler.biodiversite-quebec.ca/cog/tiles/{z}/{x}/{y}?url=${COGUrl.replace(
+          "100m",
+          "1km"
+        )}&rescale=0,10&colormap=${colormap}&resampling=cubic`,
+      ]);
+      c2.minzoom = 1;
+      c2.maxzoom = 8;
       mapp.setPaintProperty("cog", "raster-opacity", opacity / 100);
       mapp.triggerRepaint();
     }
