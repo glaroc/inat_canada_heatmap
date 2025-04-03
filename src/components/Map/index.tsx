@@ -151,8 +151,6 @@ export default function Map(props: any) {
       c1.setTiles([
         `https://tiler.biodiversite-quebec.ca/cog/tiles/{z}/{x}/{y}?url=${COGUrl}&rescale=0,10&colormap=${colormap}&resampling=cubic`,
       ]);
-      c1.minzoom = 9;
-
       const c2 = mapp.getSource("cog_1km");
       c2.setTiles([
         `https://tiler.biodiversite-quebec.ca/cog/tiles/{z}/{x}/{y}?url=${COGUrl.replace(
@@ -160,8 +158,6 @@ export default function Map(props: any) {
           "1km"
         )}&rescale=0,10&colormap=${colormap}&resampling=cubic`,
       ]);
-      c2.minzoom = 1;
-      c2.maxzoom = 8;
       mapp.setPaintProperty("cog", "raster-opacity", opacity / 100);
       mapp.triggerRepaint();
     }
